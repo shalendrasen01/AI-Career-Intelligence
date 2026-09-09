@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
-
+const resumeRoutes = require("./routes/resumeRoutes");
 const pool = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const protectedRoutes = require("./routes/protectedRoutes");
@@ -10,6 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/users", userRoutes);
+app.use("/api/resumes", resumeRoutes);
 app.use("/api", protectedRoutes);
 app.get("/api/health", (req, res) => {
     res.json({

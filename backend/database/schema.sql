@@ -75,4 +75,19 @@ CREATE TABLE job_skills (
 
     UNIQUE(job_id, skill_id)
 );
+-- 6. RESUMES
+CREATE TABLE resumes (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    original_filename VARCHAR(255) NOT NULL,
+    file_path TEXT NOT NULL,
+    mime_type VARCHAR(100) NOT NULL,
+    file_size INTEGER NOT NULL,
+    extracted_text TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
+    FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);
