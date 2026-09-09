@@ -1,5 +1,6 @@
 const pool = require("../config/db");
 const { extractTextFromPDF } = require("../services/resumeParserService");
+const { extractSkills } = require("../services/skillExtractionService");
 
 const uploadResume = async (req, res) => {
     try {
@@ -38,10 +39,23 @@ const uploadResume = async (req, res) => {
             ]
         );
 
+        // Get the newly created resume
+        const resume = result.rows[0];
+
+        // Extract skills from resume text
+        const detectedSkills = await extractSkills(
+            resume.id,
+            extractedText
+        );
+
+        // Send response
         res.status(201).json({
             success: true,
-            message: "Resume uploaded and text extracted successfully",
-            resume: result.rows[0]
+            message: "Resume uploaded, text extracted and skills detected successfully",
+            resume: {
+                ...resume,
+                detectedSkills
+            }
         });
 
     } catch (error) {
